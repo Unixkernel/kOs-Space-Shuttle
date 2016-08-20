@@ -1,0 +1,90 @@
+set runmode to 0.
+print "Space Shuttle Ascent Guidance Program".
+wait 2.
+print "Prepping Shuttle Systems".
+wait 2.
+
+clearscreen.
+
+print "SAS OFF".
+SAS OFF.
+wait 0.5.
+print "RCS OFF".
+RCS OFF.
+wait 0.5.
+print "LIGHTS OFF".
+LIGHTS OFF.
+wait 0.5.
+print "GEAR OFF".
+GEAR OFF.
+wait 0.5.
+print "FUEL CELLS OFF".
+FUELCELLS OFF.
+wait 2.
+
+clearscreen.
+
+if ALT:RADAR < 50 {
+	set runmode to 1.
+	}
+until runmode = 0 { 
+	if runmode = 1 { // Runmode 1 is countdown 
+		print "Launch Sequence Initiated, launch in T-10S".
+		print "T-10".
+		wait 1.
+		print "T-9".
+		wait 1.
+		print "T-8".
+		wait 1.
+		print "T-7".
+		wait 1.
+		print "T-6".
+		wait 1.
+		print "T-5".
+		wait 1.
+		print "T-4".
+		wait 1.
+		print "T-3".
+		wait 1.
+		print "Main Engine Start!".
+		lock throttle to 1.
+		lock steering to up + R(0,0,180).
+		stage.
+		wait 2.
+		clearscreen.
+		set runmode to 2.
+        }
+	else if runmode = 2 { // Runmode 2 is initial pitch and roll program
+		stage.
+		unlock steering.
+		set ship:control:pitch to +1.
+		print "Initial Pitch".
+		wait 0.1.
+		set ship:control:neutralize to true.
+		lock steering to up + R(0,0,180).
+		wait 2.
+		print "Engaging Roll Program".
+		lock steering to up + R(0,0,90).
+		wait 20.
+		set runmode to 3.
+		}
+	else if runmode = 3 { // Runmode 3 is beggining of gravity turn
+		lock steering to up + R(0,0,90) + R(0,-25,0).
+		WHEN MAXTHRUST = 0 THEN {
+    		PRINT "Staging".
+    		STAGE.
+    		PRESERVE.
+		}.
+		}
+}	
+
+
+
+
+
+
+
+
+
+
+		
